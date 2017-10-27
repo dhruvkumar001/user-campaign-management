@@ -1,18 +1,14 @@
 var mongoose = require('mongoose');
 var db = require('./../config/dbConfig');
-var Projects = require('./project.js');
-var validator = require('./../helpers/mongooseValidator');
+var Campaigns = require('./campaign.js');
 
 var userSchema = mongoose.Schema({
-   username: {
+   companyname: {
      type: String,
-     required: true,
-     minlength: 5,
-     maxlength: 20
+     required: true
    },
-	 emailId: {
+	 email: {
      type: String,
-     validate: validator.emailValidator,
      required: true
    },
    password: {
@@ -20,16 +16,10 @@ var userSchema = mongoose.Schema({
      required: true,
      select: false,
      minlength: 5
-   },
-   role: {
-     type: String,
-     enum: ["manager", "employee"],
-     required: true
-   },
+   },   
    token: {
      type: String
-   },
-   project : [{type : mongoose.Schema.Types.ObjectId, ref : 'Projects'}]
+   }
 },{collection : 'Users'});
 
 module.exports = db.model("Users", userSchema);

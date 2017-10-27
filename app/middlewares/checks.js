@@ -32,7 +32,7 @@ exports.assignUser = function(req, res, next){
   }
 }
 
-exports.isManager = function(req, res, next){
+/*exports.isManager = function(req, res, next){
   var token = req.header('auth-token');
   helpers.getUserByToken(token).then((user) => {
     if(user.role === 'manager')
@@ -40,4 +40,4 @@ exports.isManager = function(req, res, next){
     else
       res.status(400).json(err)
   }).catch(err => {res.status(400).json(err);});
-}
+}*/

@@ -1,10 +1,10 @@
 var User = require('./../models/user');
-var Project = require('./../models/project');
+var Campaign = require('./../models/campaign');
 const bcrypt = require('bcrypt');
 
-exports.getIdByUsername = function(username){
+exports.getIdByEmail = function(email){
   return new Promise((resolve, reject) => {
-    User.find({'username': username}, function(err, user){
+    User.find({'email': email}, function(err, user){
       if (err) {
         console.log(err);
         return reject(err);
@@ -14,21 +14,11 @@ exports.getIdByUsername = function(username){
         return resolve(a);
       }
       else
-        console.log(username +  " is not registered");
+        console.log(email +  " is not registered");
     });
   })
 }
 
-// exports.getIdByProject = function(title){
-//   Project.find({'title': title}, function(err, project){
-//     if(err)
-//       console.log(err);
-//     if(project[0])
-//       return project[0]._id;
-//     else
-//       console.log(title +  " is not registered");
-//   });
-// }
 
 exports.getUserByToken = function(token){
   return new Promise((resolve, reject) => {
@@ -44,23 +34,23 @@ exports.getUserByToken = function(token){
   })
 }
 
-exports.getProjectsByUsername = function(username){
+exports.getCampaignsByEmail = function(email){
   return new Promise((resolve, reject) => {
-    User.findOne({'username' : username}, {'_id': 0}).populate('project').exec(function(err,result){
+    User.findOne({'email' : email}, {'_id': 0}).populate('campaign').exec(function(err,result){
       if (err) return reject(err);
       if (result == undefined){
         return reject("Invalid Access!");
       }
       else{
-        return resolve(result.project);
+        return resolve(result.campaign);
       }
     });
   })
 }
 
-exports.validateUser = function(username, pass){
+exports.validateUser = function(email, pass){
   return new Promise((resolve, reject) => {
-    User.find({'username': username},'+password', function(err, user){
+    User.find({'email': email},'+password', function(err, user){
       if(user[0]){
         bcrypt.compare(pass, user[0].password, function (err, result) {
           if(err){

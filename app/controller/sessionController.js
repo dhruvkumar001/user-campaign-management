@@ -2,19 +2,18 @@ const User = require('./../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
 
-exports.sessionNew = function(req, res){
-  res.render('login', {message: 'Log in'});
-};
 
 exports.sessionCreate = function(req, res){
-   const username = req.body.username;
+   const email = req.body.username;
    const pass = req.body.password;
-   if(!username || !pass){
+   console.log(req);
+   console.log(email,"**************",pass);
+   if(!email || !pass){
      res.status(401).json({message:"Please enter all the fields"})
     //  res.render('login', {message: "Please enter all the fields"});
    }
    else{
-     User.findOne({'username': username},'+password', function(err, user){
+     User.findOne({'email': email},'+password', function(err, user){
        if(user){
          bcrypt.compare(pass, user.password, function (err, result) {
            if(err){
@@ -25,18 +24,15 @@ exports.sessionCreate = function(req, res){
              var secret = 'sseeccrreett'
              var token = jwt.sign({
                _id: user._id.toHexString(),
-               role: user.role,
-               name: user.username,
                secret
              }, 'test123').toString();
 
              const data = {
                token: token,
-               role: user.role,
-               username: user.username
+               email: user.email
              }
              res.status(200).json({status: 200, data});
-             User.findOneAndUpdate({'username': username}, {$set: {'token': token}}, function(err, response){
+             User.findOneAndUpdate({'email': email}, {$set: {'token': token}}, function(err, response){
                if(err) console.log(err);
              });
  					 }
