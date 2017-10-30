@@ -19,10 +19,12 @@ var profile = require('./routes/profileRoutes');
 var campaigns = require('./routes/manageCampaignsRoutes');
 var authenticate = require('./app/config/auth');
 app.use(validator());
+app.use(addUser);
 app.use(session);
 app.use(authenticate.user);
-app.use(addUser);
 app.use(profile);
 app.use(campaigns);
 
 app.listen(thePort);
+
+module.exports = app; // for testing

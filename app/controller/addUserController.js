@@ -40,11 +40,10 @@ exports.addUserCreate =  function(req, res){
               password: hash
             });
             newUser.save(function(err, user){
-              if(err){
-                console.log('*********************',err);
+              if(err){                
                 var error = [];
                 // error.push(err.errors['email'].message);
-                res.status(400).json({status: 400, message: error});
+                return res.status(400).json({status: 400, message: error});
                 // res.render('addUser', {message: error, type: "error"});
               }
               else{
